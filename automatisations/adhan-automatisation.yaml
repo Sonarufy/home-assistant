@@ -1,0 +1,18 @@
+alias: Adhan 🔊 with script
+description: Test automatisation Adhan en utilisant un script
+trigger:
+  - platform: time
+    at:
+      - sensor.islamic_prayer_times_dhuhr_prayer
+      - sensor.islamic_prayer_times_asr_prayer
+      - sensor.islamic_prayer_times_maghrib_prayer
+      - sensor.islamic_prayer_times_isha_prayer
+condition: []
+action:
+  - service: script.adhan_script
+    data_template:
+      salaatName: >
+        {% set triggerId = trigger.entity_id %} {% set salaatName =
+        triggerId.split('_')[-2] %} {{ salaatName }}
+mode: single
+

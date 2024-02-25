@@ -1,0 +1,47 @@
+alias: Adhan script
+sequence:
+  - service: notify.alexa_media
+    data_template:
+      target: media_player.echo_dot_sami
+      message: >
+        {% set prayerAnnouceId = {
+          'fajr': 'qTIbc9TAh7EUZTiRmeKaG9AFXHMfVUm8',
+          'dhuhr': 'gYSmIUEL1v55Rgnz6zAH2hJeApp40iIV',
+          'asr': 'cwOwvDsGMnl41Vx3B8cyTVgJ57L6pXyD',
+          'maghrib': 'yzfoxTNC5iCRh2U8IQ6LLqmTvTAktlJn',
+          'isha': 'XUg902cMKXdtzR2lFo5HdGQ2bOOrYN6t'
+        }[salaatName] %} <audio src='https://audio.jukehost.co.uk/{{
+        prayerAnnouceId }}' />
+      data:
+        type: tts
+    enabled: true
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+    enabled: false
+  - service: notify.alexa_media
+    data_template:
+      target: media_player.echo_dot_sami
+      message: >
+        {% set prayerAdhanId = 'Q5bS9GLwNQe5hDkUdb2UZbNHxWAP4pIV' if salaatName
+        == 'fajr' else 'XXiIEI39blIX0KYVJsPxJYy7ZYa70EMv' %} <audio
+        src='https://audio.jukehost.co.uk/{{ prayerAdhanId }}' />
+      data:
+        type: tts
+    enabled: true
+description: Notify all of devices
+fields:
+  title:
+    description: The Title of the notification
+  salaatName:
+    selector:
+      text:
+        multiple: true
+    name: Salaat
+    description: le nom de la salaat à annoncer
+    required: true
+mode: single
+icon: mdi:mosque-outline
+
